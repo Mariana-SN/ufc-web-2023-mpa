@@ -3,7 +3,8 @@ const cookieSession = require('cookie-session')
 const app = express()
 const port = 3000
 
-app.use(express.static('index'));
+//app.use(express.static('index'));
+app.use(express.static(__dirname + '/public'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs');
@@ -63,6 +64,12 @@ app.post('/signin', async (req, res) => {
     console.error(error);
     res.status(500).send('<script>alert("Erro ao autenticar o usuário"); window.location.href="/signin";</script>');
   }
+});
+
+app.get('/loja', async (req, res) => {
+  //console.log('=== GET - /signup');
+  const cars = await mongoRepository.getAllCars();
+  res.render('client/loja', {cars});
 });
 
 
