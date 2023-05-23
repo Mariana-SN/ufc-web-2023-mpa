@@ -27,11 +27,9 @@ app.get('/', async (req, res) => {
   //console.log('=== GET - /');
 
   try {
-    // Obtenha todos os carros cadastrados no banco de dados
     const cars = await mongoRepository.getAllCars();
     res.render('home', { cars });
   } catch (error) {
-    // Trate qualquer erro que possa ocorrer ao acessar o banco de dados
     console.error(error);
     res.render('error', { error: 'Erro ao obter os carros' });
   }
