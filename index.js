@@ -100,11 +100,28 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.use('/loja',(req, res, next) => {
+  console.log(req.session)
+  console.log('passou aqui')
+  if(req.session.user.role == 'client'){
+    next()
+  }
+  else res.redirect('/')
+})
+
 app.get('/loja', async (req, res) => {
   //console.log('=== GET - /signup');
   const cars = await mongoRepository.getAllCars();
   res.render('client/loja', { cars });
 });
+
+app.use('/admin',(req, res, next) => {
+  console.log(req.session)
+  if(req.session.user.role == 'admin'){
+    next()
+  }
+  else res.redirect('/')
+})
 
 
 app.listen(port, () => {
