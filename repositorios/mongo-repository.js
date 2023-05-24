@@ -25,10 +25,14 @@ main()
   .then(console.log)
   .catch(console.error);
 //   .finally(() => client.close());
-async function getUsers(email, password) {
-    const findResult = await user_collection.find({email: email, password: password}).toArray();
-    //console.log('Repository - getUsers - Found documents =>', findResult);
-    return findResult;
+async function getUsers(email) {
+  const findResult = await user_collection.find({ email: email }).toArray();
+  return findResult;
+}
+
+async function addUser(userData) {
+  const result = await user_collection.insertOne(userData);
+  return result.insertedId;
 }
 
 async function getCarById(carId) {
@@ -40,7 +44,6 @@ async function getAllCars() {
   const cars = await car_collection.find().toArray();
   return cars;
 }
-
 
 async function addCar(carData) {
   const result = await car_collection.insertOne(carData);
@@ -63,3 +66,5 @@ exports.addCar = addCar;
 exports.updateCar = updateCar;
 exports.deleteCar = deleteCar;
 exports.getUsers = getUsers;
+exports.addUser = addUser;
+
