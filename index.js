@@ -67,7 +67,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-  const { name, birthDate, gender, phone, email, password, confirmPassword } = req.body;
+  const { name, birthDate, gender, phone, email, password, confirmPassword, role } = req.body;
   const existingUser = await mongoRepository.getUsers(email);
 
   if (existingUser.length > 0) {
@@ -78,7 +78,7 @@ app.post('/signup', async (req, res) => {
       res.send('<script>alert("As senhas não correspondem"); window.location.href="/signup";</script>');
     }
     else {
-      await mongoRepository.addUser({ name, birthDate, gender, phone, email, password });
+      await mongoRepository.addUser({ name, birthDate, gender, phone, email, password, role });
 
       const mailOptions = {
         from: 'seu-email',
