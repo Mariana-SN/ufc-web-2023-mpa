@@ -144,9 +144,41 @@ app.use('/admin/*', (req, res, next) => {
 })
 
 app.get('/admin/loja', async (req, res) => {
-  //console.log('=== GET - /signup');
   const cars = await mongoRepository.getAllCars();
   res.render('admin/loja', { cars });
+});
+
+// ROUTES ADMIN 
+
+app.get('/admin/create-car', async (req, res) => {
+  const cars = await mongoRepository.getAllCars();
+  res.render('car/createCar', { cars });
+});
+
+app.get('/admin/rentals', async (req, res) => {
+  const cars = await mongoRepository.getAllCars();
+  res.render('admin/rental', { cars });
+});
+
+app.get('/admin/update-car/:_id', async (req, res) => {
+  const { _id } = req.params
+
+  console.log(_id)
+  const car = await mongoRepository.getCarById(_id);
+
+  res.render('car/updateCar', { car: car });
+});
+
+app.post('/create-car', async (req, res) => {
+  const { photo, name, brand, color, price, daily } = req.body 
+
+  const dataCreate = {
+    photo, name, brand,  color, price, daily, available: true
+  }
+
+  await mongoRepository.addCar(dataCreate);
+
+  res.redirect('/admin/loja')
 });
 
 app.listen(port, () => {

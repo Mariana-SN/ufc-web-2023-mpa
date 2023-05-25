@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 // Connection URL
 const url = 'mongodb://root:rootpwd@localhost:27017';
@@ -25,7 +25,6 @@ main()
   .then(console.log)
   .catch(console.error);
 //   .finally(() => client.close());
-
 async function getUsers(email) {
   const findResult = await user_collection.find({ email: email }).toArray();
   return findResult;
@@ -37,7 +36,8 @@ async function addUser(userData) {
 }
 
 async function getCarById(carId) {
-  const car = await car_collection.findOne({ _id: carId });
+  
+  const car = await car_collection.findOne({ _id: new ObjectId(carId) });
   return car;
 }
 
@@ -60,6 +60,7 @@ async function deleteCar(carId) {
   const result = await car_collection.deleteOne({ _id: carId });
   return result.deletedCount;
 }
+
 
 exports.getCarById = getCarById;
 exports.getAllCars = getAllCars;
