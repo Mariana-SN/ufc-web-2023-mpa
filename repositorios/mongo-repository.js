@@ -5,7 +5,7 @@ const url = 'mongodb://root:rootpwd@localhost:27017';
 const client = new MongoClient(url);
 
 // Database Name
-const dbName = 'ufcwebmpa';
+const dbName = 'ufcwebauth';
 
 var user_collection;
 var car_collection;
@@ -36,9 +36,8 @@ async function addUser(userData) {
 }
 
 async function getUserById(userId) {
-  console.log('User ID:', userId);
 
-  const user = await user_collection.findOne({ _id: userId });
+  const user = await user_collection.findOne({  _id: new ObjectId(userId) });
   return user;
 }
 
