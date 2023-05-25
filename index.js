@@ -51,14 +51,15 @@ app.post('/signin', async (req, res) => {
   console.log('=== POST - /signin');
   const { email, password } = req.body;
 
-  const user = await mongoRepository.getUsers(email, password);
+  const user = await mongoRepository.getUsers(email);
 
-  if (user.length > 0) {
-    req.session.user = user[0]
-    res.redirect('/loja');
-  } else {
-    res.send('<script>alert("Credenciais inválidas"); window.location.href="/signin";</script>');
+  if (user.length === 0 || user[0].password !== password) {
+    
+    return res.send('<script>alert("Credenciais inválidas"); window.location.href="/signin";</script>');
   }
+
+  req.session.user = user[0]
+  res.redirect('/loja');
 });
 
 
@@ -100,10 +101,10 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-app.use('/loja',(req, res, next) => {
+app.use('/loja', (req, res, next) => {
   console.log(req.session)
   console.log('passou aqui')
-  if(req.session.user.role == 'client'){
+  if (req.session.user.role == 'client') {
     next()
   }
   else res.redirect('/')
@@ -115,14 +116,38 @@ app.get('/loja', async (req, res) => {
   res.render('client/loja', { cars });
 });
 
-app.use('/admin',(req, res, next) => {
-  console.log(req.session)
-  if(req.session.user.role == 'admin'){
+app.get('/admin', (req, res) => {
+  //console.log('=== GET - /signin');
+  res.render('admin/signin');
+});
+
+app.post('/admin/signin', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await mongoRepository.getUsers(email);
+
+  if (user.length === 0 || user[0].password !== password) {
+    
+    return res.send('<script>alert("Credenciais inválidas"); window.location.href="/admin";</script>');
+  }
+
+  req.session.user = user[0]
+  res.redirect('/admin/loja');
+});
+
+app.use('/admin/*', (req, res, next) => {
+  //console.log(req.session)
+  if (req.session.user.role == 'admin') {
     next()
   }
   else res.redirect('/')
 })
 
+app.get('/admin/loja', async (req, res) => {
+  //console.log('=== GET - /signup');
+  const cars = await mongoRepository.getAllCars();
+  res.render('admin/loja', { cars });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

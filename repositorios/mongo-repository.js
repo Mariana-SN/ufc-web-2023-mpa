@@ -25,6 +25,7 @@ main()
   .then(console.log)
   .catch(console.error);
 //   .finally(() => client.close());
+
 async function getUsers(email) {
   const findResult = await user_collection.find({ email: email }).toArray();
   return findResult;
