@@ -5,7 +5,7 @@ const url = 'mongodb://root:rootpwd@localhost:27017';
 const client = new MongoClient(url);
 
 // Database Name
-const dbName = 'ufcwebauth';
+const dbName = 'ufcwebmpa';
 
 var user_collection;
 var car_collection;
