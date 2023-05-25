@@ -155,9 +155,9 @@ app.get('/admin/create-car', async (req, res) => {
   res.render('car/createCar', { cars });
 });
 
-app.get('/admin/rentals', async (req, res) => {
+app.get('/admin/aluguel', async (req, res) => {
   const cars = await mongoRepository.getAllCars();
-  res.render('admin/rental', { cars });
+  res.render('admin/aluguel', { cars });
 });
 
 app.get('/admin/update-car/:_id', async (req, res) => {
