@@ -165,7 +165,7 @@ app.get('/admin/loja', async (req, res) => {
 
 // ROUTES ADMIN 
 
-app.get('/admin/create-car', async (req, res) => {
+app.get('/admin/loja/add-carro', async (req, res) => {
   const cars = await mongoRepository.getAllCars();
   res.render('car/createCar', { cars });
 });
@@ -184,7 +184,7 @@ app.get('/admin/update-car/:_id', async (req, res) => {
   res.render('car/updateCar', { car: car });
 });
 
-app.post('/create-car', async (req, res) => {
+app.post('/admin/loja/add-carro', async (req, res) => {
   const { photo, name, brand, color, price, daily } = req.body 
 
   const dataCreate = {
