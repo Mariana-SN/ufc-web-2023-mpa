@@ -116,6 +116,21 @@ app.get('/loja', async (req, res) => {
   res.render('client/loja', { cars });
 });
 
+app.get('/loja/conta', async (req, res) => {
+  const userId = req.session.user._id;
+
+  const user = await mongoRepository.getUserById(userId);
+  
+    if (user) {
+      res.render('client/conta', { user });
+    } else {
+      console.log('passou aquiiii')
+
+      res.redirect('/signin');
+    }
+ 
+});
+
 app.get('/admin', (req, res) => {
   //console.log('=== GET - /signin');
   res.render('admin/signin');

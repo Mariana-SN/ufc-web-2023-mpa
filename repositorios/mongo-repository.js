@@ -35,6 +35,13 @@ async function addUser(userData) {
   return result.insertedId;
 }
 
+async function getUserById(userId) {
+  console.log('User ID:', userId);
+
+  const user = await user_collection.findOne({ _id: userId });
+  return user;
+}
+
 async function getCarById(carId) {
   
   const car = await car_collection.findOne({ _id: new ObjectId(carId) });
@@ -69,4 +76,4 @@ exports.updateCar = updateCar;
 exports.deleteCar = deleteCar;
 exports.getUsers = getUsers;
 exports.addUser = addUser;
-
+exports.getUserById = getUserById;
