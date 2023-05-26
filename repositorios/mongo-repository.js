@@ -41,6 +41,14 @@ async function getUserById(userId) {
   return user;
 }
 
+async function updateUser(userId, userData) {
+  const result = await user_collection.updateOne(
+    { _id: new ObjectId(userId) },
+    { $set: userData }
+  );
+  return result.modifiedCount;
+}
+
 async function getCarById(carId) {
   
   const car = await car_collection.findOne({ _id: new ObjectId(carId) });
@@ -73,6 +81,8 @@ exports.getAllCars = getAllCars;
 exports.addCar = addCar;
 exports.updateCar = updateCar;
 exports.deleteCar = deleteCar;
+
 exports.getUsers = getUsers;
 exports.addUser = addUser;
 exports.getUserById = getUserById;
+exports.updateUser = updateUser;

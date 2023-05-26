@@ -131,6 +131,29 @@ app.get('/loja/conta', async (req, res) => {
  
 });
 
+app.get('/loja/conta-editar', (req, res) => {
+  res.render('client/conta-editar', { user: req.session.user });
+});
+
+app.get('/loja/conta-senha', (req, res) => {
+  res.render('client/conta-senha', { user: req.session.user });
+});
+
+app.post('/loja/conta-editar', async (req, res) => {
+  const userId = req.session.user._id;
+  const { name, birthDate, gender, phone, email } = req.body;
+
+  await mongoRepository.updateUser(userId, { name, birthDate, gender, phone, email });
+
+  const updateUser = await mongoRepository.getUserById(userId);
+
+  req.session.user = updateUser;
+  console.log( req.session.user);
+
+  res.redirect('/loja/conta');
+});
+
+
 app.get('/admin', (req, res) => {
   //console.log('=== GET - /signin');
   res.render('admin/signin');
