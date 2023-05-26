@@ -82,7 +82,7 @@ async function updateCar(carId, carData) {
 }
 
 async function deleteCar(carId) {
-  const result = await car_collection.deleteOne({ _id: carId });
+  const result = await car_collection.deleteOne({ _id: new ObjectId(carId) });
   return result.deletedCount;
 }
 

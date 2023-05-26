@@ -49,8 +49,10 @@
                             <button type="button" class="btn btn-sm btn-outline-secondary">
                               <a href="http://localhost:3000/admin/update-car/<%= car._id %>"><small class="text-success">Editar</small></a>
                             </button>
-                            <button type="button" id="" class="btn btn-sm btn-outline-secondary ">
-                              <small class="text-danger">Excluir</small>
+                            <button type="button" id="" class="btn btn-sm btn-outline-secondary">
+                              <a href="/admin/loja/excluir-carro/<%= car._id %>">
+                                <small class="text-danger">Excluir</small>
+                              </a>
                             </button>
                         </div>
                         <% if (car.available) { %>

@@ -243,6 +243,15 @@ app.post('/admin/loja/add-carro', async (req, res) => {
   res.redirect('/admin/loja')
 });
 
+
+app.get('/admin/loja/excluir-carro/:_id', async (req, res) => {
+  const { _id } = req.params;
+
+  await mongoRepository.deleteCar(_id);
+
+  return res.send('<script>alert("Carro excluído com sucesso"); window.location.href="/admin/loja";</script>');
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
