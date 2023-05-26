@@ -102,9 +102,13 @@
                       <a href="/loja/alugar/<%= car._id %>" class="btn btn-primary">Alugar</a>
                       <% } else { %>
                         <p class="card-text">Status: Indisponível Hoje</p>
-                        <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %>
-                        </p>
-                        <% } %>
+                        <% leases.forEach(function(lease) { %>
+                          <% if (car._id == lease.carId) { %>
+                            <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %>
+                            </p>
+                            <% } %>
+                              <% }) %>
+                                <% } %>
                   </div>
                 </div>
               </div>
@@ -117,8 +121,8 @@
 </body>
 
 <script>
-  $(document).ready(function() {
-    $('#searchButton').click(function() {
+  $(document).ready(function () {
+    $('#searchButton').click(function () {
       var searchTerm = $('#searchInput').val().toLowerCase();
 
       $('.car-card').removeClass('hide');
@@ -126,7 +130,7 @@
       if (searchTerm !== '') {
         var hasMatches = false;
 
-        $('.car-card').each(function() {
+        $('.car-card').each(function () {
           var carName = $(this).find('.card-title').text().toLowerCase();
 
           if (!carName.includes(searchTerm)) {

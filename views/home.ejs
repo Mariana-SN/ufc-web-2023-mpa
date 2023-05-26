@@ -72,8 +72,8 @@
           <strong>Minha Loja de Carros</strong>
         </a>
         <div>
-            <a href="/signin"  class="navbar-toggler">Fazer Login</a>
-            <a href="/signup"  class="navbar-toggler">Cadastrar-se</a>
+          <a href="/signin" class="navbar-toggler">Fazer Login</a>
+          <a href="/signup" class="navbar-toggler">Cadastrar-se</a>
         </div>
       </div>
     </div>
@@ -102,9 +102,13 @@
                 <p class="card-text">Status: Disponível Hoje</p>
                 <% } else { %>
                   <p class="card-text">Status: Indisponível Hoje</p>
-                  <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %></p>
-                  </p>
-                  <% } %>
+                  <% leases.forEach(function(lease) { %>
+                    <% if (car._id == lease.carId) { %>
+                      <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %>
+                      </p>
+                      <% } %>
+                        <% }) %>
+                          <% } %>
             </div>
           </div>
         </div>
