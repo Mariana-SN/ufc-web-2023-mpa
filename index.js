@@ -38,8 +38,10 @@ app.get('/logout', (req, res) => {
 app.get('/', async (req, res) => {
   //console.log('=== GET - /');
   const cars = await mongoRepository.getAllCars();
+  const leases = await mongoRepository.getAllLease();
+
   console.log('=== GET - /');
-  res.render('home', { cars });
+  res.render('home', { cars, leases });
 
 });
 
@@ -115,7 +117,9 @@ app.use('/loja', (req, res, next) => {
 app.get('/loja', async (req, res) => {
   //console.log('=== GET - /signup');
   const cars = await mongoRepository.getAllCars();
-  res.render('client/loja', { cars });
+  const leases = await mongoRepository.getAllLease();
+
+  res.render('client/loja', { cars, leases });
 });
 
 app.get('/loja/conta', async (req, res) => {

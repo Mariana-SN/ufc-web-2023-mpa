@@ -102,7 +102,7 @@
                 <p class="card-text">Status: Disponível Hoje</p>
                 <% } else { %>
                   <p class="card-text">Status: Indisponível Hoje</p>
-                  <p class="card-text">Disponível em: <%= car.nextAvailableDate %>
+                  <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %></p>
                   </p>
                   <% } %>
             </div>

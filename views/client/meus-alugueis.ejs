@@ -46,8 +46,8 @@
                             <tr>
                                 <td><%= lease._id %></td>
                                 <td><%= lease.name %></td>
-                                <td class="text-wrap"><%= lease.dateInitial %></td>
-                                <td><%= lease.dateFinal %></td>
+                                <td class="text-wrap"><%= lease.dateInitial.split('-').reverse().join('/') %></td>
+                                <td><%= lease.dateFinal.split('-').reverse().join('/') %></td>
                             <% if (lease.available == 1) {  %>
                                 <td>Aguardando aprovação</td>
                                 <% } else if (lease.available == 2) { %>
