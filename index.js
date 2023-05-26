@@ -232,6 +232,18 @@ app.get('/admin/update-car/:_id', async (req, res) => {
   res.render('car/updateCar', { car: car });
 });
 
+app.post('/admin/update-car/:_id', async (req, res) => {
+  const { _id } = req.params
+  const { photo, name, brand, color, price, daily } = req.body 
+
+  const dataCreate = {
+    photo, name, brand,  color, price, daily
+  }
+
+  await mongoRepository.updateCar(_id, dataCreate );
+  res.redirect('/admin/loja')
+});
+
 app.post('/admin/loja/add-carro', async (req, res) => {
   const { photo, name, brand, color, price, daily } = req.body 
 
@@ -252,6 +264,35 @@ app.get('/admin/loja/excluir-carro/:_id', async (req, res) => {
 
   return res.send('<script>alert("Carro excluído com sucesso"); window.location.href="/admin/loja";</script>');
 });
+
+
+// ROUTES ALUGUEL
+
+app.get('/loja/alugar/:_id', async (req, res) => {
+  const { _id } = req.params
+
+  const car = await mongoRepository.getCarById(_id);
+
+  res.render('lease/createLease', { car: car});
+});
+
+app.post('/loja/add-lease/:carId', async (req, res) => {
+  const { carId } = req.params
+  const userId = req.session.user._id;
+  const { name, dateInitial, dateFinal, valueTotal } = req.body 
+
+  const dataCreate = {
+    name, carId, userId, dateInitial, dateFinal, valueTotal, 
+  }
+  
+  await mongoRepository.updateCarStatus(carId, true);
+
+  await mongoRepository.addLease(dataCreate);
+
+  res.redirect('/admin/loja')
+});
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

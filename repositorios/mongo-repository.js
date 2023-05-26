@@ -9,6 +9,7 @@ const dbName = 'ufcwebmpa';
 
 var user_collection;
 var car_collection;
+var lease_collection;
 
 async function main() {
   // Use connect method to connect to the server
@@ -17,6 +18,7 @@ async function main() {
   const db = client.db(dbName);
   user_collection = db.collection('user');
   car_collection = db.collection('cars');
+  lease_collection = db.collection('lease');
 
   return 'done.';
 }
@@ -77,7 +79,7 @@ async function addCar(carData) {
 }
 
 async function updateCar(carId, carData) {
-  const result = await car_collection.updateOne({ _id: carId }, { $set: carData });
+  const result = await car_collection.updateOne({  _id: new ObjectId(carId)  }, { $set: carData });
   return result.modifiedCount;
 }
 
@@ -86,15 +88,33 @@ async function deleteCar(carId) {
   return result.deletedCount;
 }
 
+async function addLease(leaseData) {
+  const result = await lease_collection.insertOne(leaseData);
+  return result.insertedId;
+}
+
+async function updateCarStatus(carId, newStatus) {
+  const result = await car_collection.updateOne({  _id: new ObjectId(carId)  }, { $set: { availableToday: newStatus } });
+  return result.modifiedCount;
+}
+
+async function getAllLeaseByUserId(UserId) {
+  const user = await lease_collection.find({  userId: UserId }).toArray();
+  return user;
+}
 
 exports.getCarById = getCarById;
 exports.getAllCars = getAllCars;
 exports.addCar = addCar;
 exports.updateCar = updateCar;
 exports.deleteCar = deleteCar;
+exports.updateCarStatus = updateCarStatus;
 
 exports.getUsers = getUsers;
 exports.addUser = addUser;
 exports.getUserById = getUserById;
 exports.updateUser = updateUser;
 exports.updateUserPassword = updateUserPassword;
+
+exports.addLease = addLease;
+exports.getAllLeaseByUserId = getAllLeaseByUserId;
