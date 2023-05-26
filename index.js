@@ -178,6 +178,41 @@ app.post('/loja/alterar-senha', async (req, res) => {
   }
 });
 
+app.get('/loja/aluguel', async(req, res) => {
+  const _id = req.session.user._id;
+  const leases = await mongoRepository.getAllLeaseByUserId(_id);
+  
+  console.log(leases);
+  
+  res.render('client/meus-alugueis', { leases });
+})
+
+app.get('/loja/alugar/:_id', async (req, res) => {
+  const { _id } = req.params
+
+  const car = await mongoRepository.getCarById(_id);
+
+  res.render('lease/createLease', { car: car});
+});
+
+
+app.post('/loja/add-lease/:carId', async (req, res) => {
+  const { carId } = req.params
+  const userId = req.session.user._id;
+  const { name, dateInitial, dateFinal, valueTotal } = req.body 
+
+  const dataCreate = {
+    name, carId, userId, dateInitial, dateFinal, valueTotal, 
+  }
+  
+  await mongoRepository.updateCarStatus(carId, true);
+
+  await mongoRepository.addLease(dataCreate);
+
+  res.redirect('/loja')
+});
+
+// ROUTES ADMIN 
 
 app.get('/admin', (req, res) => {
   //console.log('=== GET - /signin');
@@ -211,7 +246,6 @@ app.get('/admin/loja', async (req, res) => {
   res.render('admin/loja', { cars });
 });
 
-// ROUTES ADMIN 
 
 app.get('/admin/loja/add-carro', async (req, res) => {
   const cars = await mongoRepository.getAllCars();
@@ -264,14 +298,6 @@ app.get('/admin/loja/excluir-carro/:_id', async (req, res) => {
   return res.send('<script>alert("Carro excluído com sucesso"); window.location.href="/admin/loja";</script>');
 });
 
-app.get('/loja/aluguel', async(req, res) => {
-  const _id = req.session.user._id;
-  const leases = await mongoRepository.getAllLeaseByUserId(_id);
-  
-  console.log(leases);
-  
-  res.render('client/aluguel', { leases });
-})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
