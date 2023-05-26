@@ -5,7 +5,7 @@ const url = 'mongodb://root:rootpwd@localhost:27017';
 const client = new MongoClient(url);
 
 // Database Name
-const dbName = 'ufcwebmpa';
+const dbName = 'ufcwebauth';
 
 var user_collection;
 var car_collection;
@@ -49,6 +49,17 @@ async function updateUser(userId, userData) {
   return result.modifiedCount;
 }
 
+async function updateUserPassword(userId, newPassword) {
+  const result = await user_collection.updateOne(
+
+    { _id: new ObjectId(userId) },
+    { $set: { password: newPassword } }
+
+  );
+
+  return result.modifiedCount;
+}
+
 async function getCarById(carId) {
   
   const car = await car_collection.findOne({ _id: new ObjectId(carId) });
@@ -86,3 +97,4 @@ exports.getUsers = getUsers;
 exports.addUser = addUser;
 exports.getUserById = getUserById;
 exports.updateUser = updateUser;
+exports.updateUserPassword = updateUserPassword;

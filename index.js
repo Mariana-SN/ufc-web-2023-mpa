@@ -153,6 +153,30 @@ app.post('/loja/conta-editar', async (req, res) => {
   res.redirect('/loja/conta');
 });
 
+app.get('/loja/alterar-senha', (req, res) => {
+  res.render('client/alterar-senha');
+});
+
+app.post('/loja/alterar-senha', async (req, res) => {
+  const userId = req.session.user._id;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+  const confirmPassword = req.body.confirmPassword;
+
+  const user = await mongoRepository.getUserById(userId);
+
+  if (user && user.password === oldPassword) {
+    if (newPassword === confirmPassword) {
+      await mongoRepository.updateUserPassword(userId, newPassword);
+      res.redirect('/loja/conta');
+    } else {
+      res.send('<script>alert("As senhas não correspondem"); window.location.href="/loja/conta-senha";</script>');
+    }
+  } else {
+    res.send('<script>alert("Senha incorreta"); window.location.href="/loja/conta-senha";</script>');
+  }
+});
+
 
 app.get('/admin', (req, res) => {
   //console.log('=== GET - /signin');
