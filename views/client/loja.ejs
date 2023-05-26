@@ -39,6 +39,10 @@
       height: 200px;
       width: auto;
     }
+
+    .hide {
+      display: none;
+    }
   </style>
 </head>
 
@@ -64,6 +68,18 @@
       <div class="col-md-10">
         <div class="container">
           <h2 class="mt-4">Carros Disponíveis:</h2> <br><br>
+
+          <div class="row row-with-spacing">
+            <div class="col-md-4">
+              <div class="form-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button id="searchButton" class="btn btn-primary">Pesquisar</button>
+            </div>
+          </div>
+
           <div class="row row-with-spacing">
             <% cars.forEach(function(car, index) { %>
               <div class="col-md-4">
@@ -86,7 +102,8 @@
                       <a href="/loja/alugar/<%= car._id %>" class="btn btn-primary">Alugar</a>
                       <% } else { %>
                         <p class="card-text">Status: Indisponível Hoje</p>
-                        <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %></p>
+                        <p class="card-text">Disponível em: <%= lease.dateFinal.split('-').reverse().join('/') %>
+                        </p>
                         <% } %>
                   </div>
                 </div>
@@ -101,6 +118,25 @@
       </div>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function() {
+      $('#searchButton').click(function() {
+        var searchTerm = $('#searchInput').val().toLowerCase();
+  
+        
+        $('.card').each(function() {
+          var carName = $(this).find('.card-title').text().toLowerCase();
+  
+          if (carName.includes(searchTerm)) {
+            $(this).removeClass('hide');
+          } else {
+            $(this).addClass('hide');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
