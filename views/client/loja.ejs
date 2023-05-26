@@ -15,26 +15,6 @@
       padding: 0;
     }
 
-    .sidebar {
-      height: 100%;
-      width: 200px;
-      background-color: #f8f9fa;
-      padding-top: 20px;
-    }
-
-    .sidebar a {
-      padding: 6px 8px 6px 16px;
-      text-decoration: none;
-      font-size: 16px;
-      color: #343a40;
-      display: block;
-    }
-
-    .sidebar a:hover {
-      color: #000;
-      background-color: #e9ecef;
-    }
-
     .content {
       padding: 20px;
     }
@@ -45,7 +25,6 @@
 
     .card-body {
       height: calc(100% - 68px);
-      /* Ajuste conforme necessário para levar em conta o espaço ocupado pelo título e pelo texto do card */
     }
 
     .card.mb-4 {
@@ -55,29 +34,33 @@
     .row-with-spacing {
       margin-bottom: 30px;
     }
+
+    .car-image {
+      height: 200px;
+      width: auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">Minha Loja de Carros</a>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="row">
-      <div class="col-md-2">
-        <div class="sidebar">
-          <a href="/loja">Loja</a>
-          <a href="/loja/aluguel">Meus Aluguéis</a>
-          <a href="/loja/conta">Minha Conta</a>
+    <header data-bs-theme="dark">
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Minha Loja de Carros</strong>
+          </a>
+          <div>
+            <a href="/loja" class="navbar-toggler">Loja</a>
+            <a href="/loja/aluguel" class="navbar-toggler">Meus Aluguéis</a>
+            <a href="/loja/conta" class="navbar-toggler">Minha Conta</a>
+            <a href="/logout" class="navbar-toggler">Logout</a>
+          </div>
         </div>
       </div>
+    </header>
+
+    <div class="row justify-content-center">
       <div class="col-md-10">
         <div class="container">
           <h2 class="mt-4">Carros Disponíveis:</h2> <br><br>
@@ -85,9 +68,7 @@
             <% cars.forEach(function(car, index) { %>
               <div class="col-md-4">
                 <div class="card mb-4">
-                  <img class="card-img-top"
-                    src="https://conteudo.imguol.com.br/c/entretenimento/30/2019/11/14/aspark-owl-1573758305936_v2_900x506.jpg"
-                    alt="Foto do Carro">
+                  <img src="<%= car.photo %>" class="card-img-top car-image" alt="Foto do carro">
                   <div class="card-body">
                     <h5 class="card-title">
                       <%= car.name %>
@@ -96,11 +77,11 @@
                     </p>
                     <p class="card-text">Cor: <%= car.color %>
                     </p>
-                    <p class="card-text">Valor: <%= car.value %>
+                    <p class="card-text">Valor: <%= car.price %>
                     </p>
-                    <p class="card-text">Preço da Diária: <%= car.dailyPrice %>
+                    <p class="card-text">Preço da Diária: <%= car.daily %>
                     </p>
-                    <% if (car.availableToday) { %>
+                    <% if (car.available) { %>
                       <p class="card-text">Status: Disponível Hoje</p>
                       <a href="/loja/alugar" class="btn btn-primary">Alugar</a>
                       <% } else { %>

@@ -37,6 +37,7 @@ app.get('/logout', (req, res) => {
 app.get('/', async (req, res) => {
   //console.log('=== GET - /');
   const cars = await mongoRepository.getAllCars();
+  console.log('=== GET - /');
   res.render('home', { cars });
 
 });
