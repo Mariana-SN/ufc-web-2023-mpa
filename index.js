@@ -256,7 +256,6 @@ app.post('/admin/loja/add-carro', async (req, res) => {
   res.redirect('/admin/loja')
 });
 
-
 app.get('/admin/loja/excluir-carro/:_id', async (req, res) => {
   const { _id } = req.params;
 
@@ -265,34 +264,14 @@ app.get('/admin/loja/excluir-carro/:_id', async (req, res) => {
   return res.send('<script>alert("Carro excluído com sucesso"); window.location.href="/admin/loja";</script>');
 });
 
-
-// ROUTES ALUGUEL
-
-app.get('/loja/alugar/:_id', async (req, res) => {
-  const { _id } = req.params
-
-  const car = await mongoRepository.getCarById(_id);
-
-  res.render('lease/createLease', { car: car});
-});
-
-app.post('/loja/add-lease/:carId', async (req, res) => {
-  const { carId } = req.params
-  const userId = req.session.user._id;
-  const { name, dateInitial, dateFinal, valueTotal } = req.body 
-
-  const dataCreate = {
-    name, carId, userId, dateInitial, dateFinal, valueTotal, 
-  }
+app.get('/loja/aluguel', async(req, res) => {
+  const _id = req.session.user._id;
+  const leases = await mongoRepository.getAllLeaseByUserId(_id);
   
-  await mongoRepository.updateCarStatus(carId, true);
-
-  await mongoRepository.addLease(dataCreate);
-
-  res.redirect('/admin/loja')
-});
-
-
+  console.log(leases);
+  
+  res.render('client/aluguel', { leases });
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
