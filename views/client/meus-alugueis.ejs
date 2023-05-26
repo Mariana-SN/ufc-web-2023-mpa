@@ -48,14 +48,18 @@
                                 <td><%= lease.name %></td>
                                 <td class="text-wrap"><%= lease.dateInitial %></td>
                                 <td><%= lease.dateFinal %></td>
-                            <% if (lease.available === 1) {  %>
+                            <% if (lease.available == 1) {  %>
                                 <td>Aguardando aprovação</td>
-                                <% } else if (lease.available === 2) { %>
+                                <% } else if (lease.available == 2) { %>
                                 <td> Aprovado </td>
-                                <% } else if (lease.available === 3) { %>
+                                <% } else if (lease.available == 3) { %>
                                 <td> Rejeitado </td>
                                 <% } %>
-                                <td data-car='<%= JSON.stringify(car) %>' onclick="openModalCar(this)">Ver</td>
+                                <% for (car of cars) {
+                                    if (car._id.toString() === lease.carId) { %>
+                                        <td data-car='' onclick="openModalCar(this)">Ver</td>
+                                    <% } %> 
+                                <% } %> 
                             </tr>
                             <% } %>
                         </tbody>

@@ -94,13 +94,23 @@ async function addLease(leaseData) {
 }
 
 async function updateCarStatus(carId, newStatus) {
-  const result = await car_collection.updateOne({  _id: new ObjectId(carId)  }, { $set: { availableToday: newStatus } });
+  const result = await car_collection.updateOne({  _id: new ObjectId(carId)  }, { $set: { available: newStatus } });
   return result.modifiedCount;
 }
 
 async function getAllLeaseByUserId(UserId) {
   const user = await lease_collection.find({  userId: UserId }).toArray();
   return user;
+}
+
+async function updateLeaseAvailable(leaseId, newavailable) {
+  const result = await lease_collection.updateOne({  _id: new ObjectId(leaseId)  }, { $set: { available: newavailable } });
+  return result.modifiedCount;
+}
+
+async function getAllLease(UserId) {
+  const lease = await lease_collection.find().toArray();
+  return lease;
 }
 
 exports.getCarById = getCarById;
@@ -118,3 +128,5 @@ exports.updateUserPassword = updateUserPassword;
 
 exports.addLease = addLease;
 exports.getAllLeaseByUserId = getAllLeaseByUserId;
+exports.updateLeaseAvailable = updateLeaseAvailable
+exports.getAllLease = getAllLease

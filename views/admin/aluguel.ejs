@@ -31,28 +31,42 @@
                 <table class="table">
                     <thead>
                       <tr>
-                        <th>Id</th>
+                        <th>Id do carro</th>
                         <th>Carro</th>
-                        <th>Inicio</th>
-                        <th>Final</th>
+                        <th>Data Inicio</th>
+                        <th>Data Final</th>
                         <th>Status</th>
                         <th>Aprovar/Rejeitar</th>
                       </tr>
                     </thead>
                     <tbody>
-                    <%  for(car of cars){ %>
+                    <%  for(lease of leases){ %>
                       <tr>
-                        <td data-car='<%= JSON.stringify(car) %>' onclick="openModalCar(this)"><%= car._id %></td>
-                        <td><%= car.name %></td>
-                        <td> - </td>
-                        <td> - </td>
-                       <% if (car.available === 1) {  %>
+                        <%  for(car of cars){ %>
+                              <% if(car._id.toString() === lease.carId){ %>
+                                <td data-car='<%= JSON.stringify(car) %>' onclick="openModalCar(this)"><%= car._id %></td>
+                                <% } %>
+                          <% } %>
+                        <td><%= lease.name %></td>
+                        <td> <%= lease.dateInitial %> </td>
+                        <td><%= lease.dateFinal %></td>
+                       <% if (lease.available == 1) {  %>
                         <td>Aguardando aprovação</td>
-                        <td><a href="">Aprovar</a>/ <a href="">Rejeitar</a></td>
-                        <% } else if (car.available === 2) { %>
+                        <td>
+                          <form action="http://localhost:3000/admin/update-lease-status/<%= lease._id %>" method="post">
+                            <input type="hidden" name="available" value="2">
+                            <button class="btn btn-link" type="submit" name>Aprovar</button>
+                          </form>
+                          <form action="http://localhost:3000/admin/update-lease-status/<%= lease._id %>" method="post">
+                            <input type="hidden" name="available" value="3">
+                            <input type="hidden" name="carId" value="<%= car._id %>">
+                            <button class="btn btn-link" type="submit" name>Reprovar</button>
+                          </form>
+                        </td>
+                        <% } else if (lease.available == 2) { %>
                         <td> Aprovado </td>
                         <td> - </td>
-                        <% } else if (car.available === 3) { %>
+                        <% } else if (lease.available == 3) { %>
                         <td> Rejeitado </td>
                         <td> - </td>
                         <% } %>
