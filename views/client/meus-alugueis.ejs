@@ -38,6 +38,7 @@
                                 <th>Data final</th>
                                 <th></th>
                                 <th>Status</th>
+                                <th>Ver Informações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +55,7 @@
                                 <% } else if (lease.available === 3) { %>
                                 <td> Rejeitado </td>
                                 <% } %>
+                                <td data-car='<%= JSON.stringify(car) %>' onclick="openModalCar(this)">Ver</td>
                             </tr>
                             <% } %>
                         </tbody>
@@ -95,4 +97,21 @@
     // Atribua eventos de clique ao botão de abertura e ao botão de fechamento
     openModalBtn.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
+
+    function openModalCar(element) {
+        const car = JSON.parse(element.dataset.car);
+        document.getElementById('carModalTitle').textContent = car.name;
+        document.getElementById('carModalBody').innerHTML = `
+        <p>Nome: ${car.name}</p>
+        <p>Marca: ${car.brand}</p>
+        <p>Cor: ${car.color}</p>
+        <p>Preço: ${car.price}</p>
+        <p>Diária: ${car.daily}</p>
+        <p>Disponibilidade: ${car.available ? 'Disponível' : 'Indisponível'}</p>
+        <img src="${car.photo}" alt="Car Photo" width="100%" />`
+    ;
+
+        const bootstrapModal = new bootstrap.Modal(document.getElementById('carModal'));
+        bootstrapModal.show();
+    }
 </script>
